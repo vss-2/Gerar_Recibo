@@ -3,6 +3,11 @@
 # Isso ai em cima é pra caso esteja ASCII
 
 from reportlab.pdfgen import canvas
+from textwrap import wrap
+import traceback
+
+# O textwrap vai repartir linhas
+# O traceback vai mostrar onde está o erro
 
 def gerarRecibo():
     try:
@@ -18,6 +23,7 @@ def gerarRecibo():
         X = 150 
         Y = 150
         texto = 'Textinho padrão para testes'
+        texto = "\n".join(wrap(texto, 5)) # Quebra o texto a cada 5 chars
         # Posicoes relativas e texto
         
         # Jeito 1
@@ -31,6 +37,7 @@ def gerarRecibo():
         # Encerra o arquivo e o salva no 
         # diretório que o main.py está
     except:
-        print('deu ruim')
+        traceback.print_exc()
+        print('Deu ruim')
         
 gerarRecibo()
