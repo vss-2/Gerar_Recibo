@@ -18,3 +18,18 @@ Para execução do arquivo, deve-se:
 <code> $ source activate </code>
 
 5. Pronto, se chegou até aqui, deu tudo certo
+
+<br>
+<br>
+
+# Leitor de código de barras
+
+### Requisitos:
+```
+Python3
+PyPI
+OpenCV - Python (pip3 install opencv-python)
+Numpy (pip3 install numpy)
+Pyperclip (pip3 install pyperclip)
+Pyzbar (pip3 install pyzbar)
+```
