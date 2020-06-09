@@ -6,16 +6,27 @@ from pyzbar.pyzbar import decode
 
 
 if __name__ == "__main__":
-        print(listdir(getcwd()))
+        lista = listdir(getcwd())
 
+        k = 0
+        for l in lista:
+                print(k,l)
+                k += 1
+                
         nome_img = input('Insira o nome da imagem a ser escaneada:\n')
 
-        if(exists(nome_img)):
-                img = cv.imread(str(nome_img))
+        try:
+                # Vê se foi input inteiro ou nome
+                nome_img = lista[int(nome_img)]
+        finally:
+                if(exists(nome_img)):
+                        img = cv.imread(str(nome_img))
 
-                for cdg_barra in decode(img):
-                        if(cdg_barra.type.lower() == 'code128'):
-                                print(cdg_barra.data.decode('utf-8'))
-
+                        for cdg_barra in decode(img):
+                                if(cdg_barra.type.lower() == 'code128'):
+                                        with open(str(nome_img[:-3]+'txt'), 'w+') as arq:
+                                                arq.write(cdg_barra.data.decode('utf-8'))
+                                                arq.close()
+                else:
+                        print('Arquivo não encontrado!')
                 exit()
-
