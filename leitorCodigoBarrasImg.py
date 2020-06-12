@@ -7,12 +7,15 @@ from pyzbar.pyzbar import decode
 
 if __name__ == "__main__":
         lista = listdir(getcwd())
-
+	img_suf = ['jpg','png','bmp','ico','webp']
         k = 0
         for l in lista:
-                print(k,l)
+                if(l[-3:] in img_suf):
+			print(k,'\033[92m'+l+'\033[0m')
+		else:
+			print(k,l)
                 k += 1
-                
+
         nome_img = input('Insira o nome da imagem a ser escaneada:\n')
 
         try:
