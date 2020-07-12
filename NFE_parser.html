@@ -1,0 +1,55 @@
+<!doctype HTML>
+	<html>
+		<head>
+		<title>Nota Fiscal Parser com JSON</title>
+		<style>
+			body {
+				align: center;
+			}
+		</style>
+		</head>
+			<script>
+				var abrirArq = function(event){
+					var input = event.target;
+					var leitor = new FileReader();
+					leitor.onload = function(){
+						var texto = leitor.result;
+						var obj = JSON.parse(texto);
+						// var dados = [nome, cp, endereco, numero, bairro, complemento, cidade, nota, serie, data, basecalc, icms, total];
+						var dados = ['nome', 'cp', 'endereco', 'numero', 'bairro', 'complemento', 'cidade', 'nota', 'serie', 'data', 'basecalc', 'icms', 'total'];
+						for (valor in dados){
+							if(valor != null){
+								var modificar = document.getElementById(valor);
+								modificar.innerText = obj[valor];
+							}
+						}
+					};
+					leitor.readAsText(input.files[0]);
+				};
+			</script>
+			<script>
+				function copiarSimples(){
+					var campo = document.getElementById("campoInput");
+					navigator.clipboard.writeText(campo.value).then(function() {
+						return
+					});
+				}
+			</script>
+		<body>
+			<input type='file' accept='text/json' onchange='abrirArq(event)'>
+			<div id='nome'></div>
+			<div id='cp'></div>
+			<div id='endereco'></div>
+			<div id='numero'></div>
+			<div id='bairro'></div>
+			<div id='complemento'></div>
+			<div id='cidade'></div>
+			<div id='nota'></div>
+			<div id='serie'></div>
+			<div id='data'></div>
+			<div id='basecalc'></div>
+			<div id='icms'></div>
+			<div id='total'></div>
+			<div id='output'></div>
+		</body>
+	</html>
