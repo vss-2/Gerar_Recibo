@@ -9,31 +9,48 @@
 		</style>
 		</head>
 			<script>
+				function copiarSimples(id){
+					console.log(id);
+					var campo = document.getElementById(id+'_p').textContent;
+					console.log(campo);
+					navigator.clipboard.writeText(campo).then(function() {
+						return
+					});
+				}
+			</script>
+			<script>
 				var abrirArq = function(event){
 					var input = event.target;
 					var leitor = new FileReader();
 					leitor.onload = function(){
 						var texto = leitor.result;
 						var obj = JSON.parse(texto);
+
 						// var dados = [nome, cp, endereco, numero, bairro, complemento, cidade, nota, serie, data, basecalc, icms, total];
-						var dados = ['nome', 'cp', 'endereco', 'numero', 'bairro', 'complemento', 'cidade', 'nota', 'serie', 'data', 'basecalc', 'icms', 'total'];
-						for (valor in dados){
-							if(valor != null){
-								var modificar = document.getElementById(valor);
-								modificar.innerText = obj[valor];
+						// console.log(dados);
+
+						var dados = ['nome', 'cp', 'endereco', 'numero', 'bairro', 'complemento', 'cidade', 'nota', 'serie', 'data', 'cbarras', 'basecalc', 'icms', 'total'];
+						// console.log('Quantidade de dados:', dados.length);
+
+						for(i = 0; i < dados.length; i++){
+							if(dados[i] != null){
+								var modificar = document.getElementById(dados[i]+'_p');
+
+								modificar.innerText = obj[dados[i]];
+								
+								var botao = document.createElement('button');
+								var botao_txt = document.createTextNode('Copiar ' + dados[i]);
+								botao.appendChild(botao_txt);
+								
+								// console.log('\''+dados[i]+'\'');
+								
+								botao.setAttribute('onclick', 'copiarSimples('+'\''+dados[i]+'\''+')');
+								document.querySelector('.'+dados[i]).appendChild(botao);
 							}
 						}
 					};
 					leitor.readAsText(input.files[0]);
 				};
-			</script>
-			<script>
-				function copiarSimples(){
-					var campo = document.getElementById("campoInput");
-					navigator.clipboard.writeText(campo.value).then(function() {
-						return
-					});
-				}
 			</script>
 		<body>
 			<input type='file' accept='text/json' onchange='abrirArq(event)'>
