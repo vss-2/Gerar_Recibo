@@ -1,0 +1,50 @@
+html {
+        font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.dados {
+        display: grid;
+        place-items: center;
+}
+
+body {
+        background-color: #0D1016;
+        font-family: monospace;
+        text-align: left;
+        color: crimson;
+        font-size: 15px;
+        font-weight: bold;
+}
+
+input {
+        padding-top: 2px;
+        padding-bottom: 0px;
+        box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+        border-radius: 2px;
+        border: 0;
+        transition: .2s ease-out;
+        font-size: 15px;
+        font-family: monospace;
+        background-color: rgb(86, 88, 92);
+}
+
+input:hover {
+        background-color: #F9C543;
+}
+input:focus {
+        color: #0D1016;
+        background-color: #00d255 !important;
+}
+
+input:active {
+        color: #0D1016;
+        background-color: #0b51c5 !important;
+}
+
+.salvar {
+        background-color: #1360db;
+}
+
+.formulario {
+        display: grid;
+}
