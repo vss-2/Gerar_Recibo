@@ -47,4 +47,25 @@ input:active {
 
 .formulario {
         display: grid;
+        grid-auto-flow: column;
+        text-align: right;
+}
+
+input {
+        color: white;
+}
+
+div.concluido {
+        place-content: center;
+        display: grid;
+}
+
+a {
+        text-align: center;
+        color: #F9C543;
+        text-decoration: none;
+}
+
+p.concluido {
+        text-align: center;
 }
