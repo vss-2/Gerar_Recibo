@@ -1,4 +1,7 @@
 from bottle import route, request, run, template, static_file, get
+from PIL import Image, ImageEnhance
+from pathlib import Path
+from os.path import splitext
 import json
 
 @route('/')
@@ -48,15 +51,39 @@ def post_nome():
                 'nota': str(nota),
                 'serie': str(serie),
                 'data': str(data),
+                'cbarras': str(cbarras),
                 'basecalc': str(basecalc),
                 'icms': str(icms),
-                'total': str(total)
+                'total': str(total),
+                'output': str(output)
         }
 
         with open(str(nome_arq)+'.json', 'w') as output_json:
                 json.dump(output_dados, output_json)
         
-        return template('template/concluido', nome_arquivo=nome_arq, valor_total=total)
+        return template('template/concluido', nome_arquivo="Nome do arquivo gerado: {}".format(nome_arq), valor_total="Valor do total da nota: {}".format(total))
 
+@route('/contraste', method='GET')
+def index():
+        return template('template/contraste.tpl', title='Correção de constraste')
+
+@route('/contraste', method='POST')
+def index():
+        abrir_img = request.files.get('imagem_arquivo')
+        nome_img  = request.forms.get('nome_arquivo')
+
+        abrir_img.save(str(Path.cwd()))
+        
+        abre_img  = Image.open(abrir_img.filename)
+        edit_img  = ImageEnhance.Brightness(abre_img)
+        contraste = edit_img.enhance(2.0)
+        contraste.save(str(Path.cwd())+'/images/{}{}'.format(nome_img, splitext(abrir_img.filename)[1]))
+
+        abre_img.close()
+        contraste.close()
+        abrir_img = None
+        edit_img = None
+        contraste = None
+        return template('template/concluido', nome_arquivo="O aumento de contraste foi concluído com sucesso, salvo em: ", valor_total=str(nome_img))
 
 run(host='localhost', port=8080, debug=True)
