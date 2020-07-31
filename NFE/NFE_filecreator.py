@@ -2,6 +2,8 @@ from bottle import route, request, run, template, static_file, get
 from PIL import Image, ImageEnhance
 from pathlib import Path
 from os.path import splitext
+from pyzbar.pyzbar import decode
+import cv2 as cv
 import json
 
 @route('/')
@@ -72,18 +74,30 @@ def index():
         abrir_img = request.files.get('imagem_arquivo')
         nome_img  = request.forms.get('nome_arquivo')
 
-        abrir_img.save(str(Path.cwd()))
+        novo_arquivo = Path(str(Path.cwd())+'/'+str(abrir_img.filename))
+
+        if(novo_arquivo.is_file() == True):
+                novo_arquivo.rename(novo_arquivo.name[:-len(novo_arquivo.suffix)]+'_old'+str(novo_arquivo.suffix))
+        abrir_img.save(novo_arquivo.name)
         
-        abre_img  = Image.open(abrir_img.filename)
+        abre_img  = Image.open(novo_arquivo.name)
         edit_img  = ImageEnhance.Brightness(abre_img)
         contraste = edit_img.enhance(2.0)
         contraste.save(str(Path.cwd())+'/images/{}{}'.format(nome_img, splitext(abrir_img.filename)[1]))
+
+        opencv_img = cv.imread(str(Path.cwd())+'/images/{}{}'.format(nome_img, splitext(abrir_img.filename)[1]))
+        
+        cdg_barras = None
+
+        for cdg_barras in decode(opencv_img):
+                if(cdg_barras.type.lower() == 'code128'):
+                        print("Sucesso!")
 
         abre_img.close()
         contraste.close()
         abrir_img = None
         edit_img = None
         contraste = None
-        return template('template/concluido', nome_arquivo="O aumento de contraste foi concluído com sucesso, salvo em: ", valor_total=str(nome_img))
+        return template('template/concluido', nome_arquivo=str('O aumento de contraste foi concluído com sucesso, salvo em: '+str(nome_img)), valor_total=str('Código de barras: '+str(cdg_barras)))
 
 run(host='localhost', port=8080, debug=True)
